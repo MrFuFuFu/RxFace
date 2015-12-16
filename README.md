@@ -59,9 +59,9 @@ Content-Transfer-Encoding: 8bit
 
 `MultipartTypedOutput` 为 final 类，所以重写为 `CustomMultipartTypedOutput`，并使其构造函数，增加 boundary 的设置；
 
-`TypedString `默认的编码格式是`UTF-8`，所以重写`AsciiTypeString`类，使其编码格式改为 `US-ASCII`；
+`TypedString `默认的编码格式是`UTF-8`，所以重写为 `AsciiTypeString`类，使其编码格式改为 `US-ASCII`；
 
-`TypedByteArray` 默认的的 `fileName()` 方法返回的是 null，而当传图片数据时需要 fileName 为 "NoName"，所以重写 `CustomTypedByteArray` 设置其 fileName 为 "NoName"。
+`TypedByteArray` 默认的的 `fileName()` 方法返回的是 null，而当传图片数据时需要 fileName 为 "NoName"，所以重写为 `CustomTypedByteArray` 类，设置其 fileName 为 "NoName"。
  
  同时需要注意的是在设置 `RestAdapter` 的 header 时，其 boundary 一定要和 `CustomMultipartTypedOutput` 的 boundary 相同，否则服务端无法匹配的！（这个地方，一时没注意，被整了一个多小时才发现！！） 
  
