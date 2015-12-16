@@ -66,6 +66,18 @@ Content-Transfer-Encoding: 8bit
  
  同时需要注意的是在设置 `RestAdapter` 的 header 时，其 boundary 一定要和 `CustomMultipartTypedOutput` 的 boundary 相同，否则服务端无法匹配的！（这个地方，一时没注意，被整了一个多小时才发现！！） 
  
+ 最后 body 的传参，这样来得到：
+ 
+ ```java
+ public static CustomMultipartTypedOutput mulipartData(Bitmap bitmap, String boundary){
+    byte[] data = getBitmapByte(bitmap);
+    CustomMultipartTypedOutput multipartTypedOutput = new CustomMultipartTypedOutput(boundary);
+    multipartTypedOutput.addPart("api_key", "8bit", new AsciiTypeString(Constants.API_KEY));
+    multipartTypedOutput.addPart("api_secret", "8bit", new AsciiTypeString(Constants.API_SECRET));
+    multipartTypedOutput.addPart("img", new CustomTypedByteArray("application/octet-stream", data));
+    return multipartTypedOutput;
+}
+ ```
 
 
 ## Preview
