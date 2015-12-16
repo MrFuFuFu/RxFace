@@ -11,9 +11,8 @@ RxFace
 
 ## Difficult point
 
-当直接使用 `get` 通过传图片 Url 拿到人脸识别数据的话是相当简单的，如下请求链接只要使用 `Retrofit` 的 `get` 请求的 `@QueryMap` 传递参数即可
+当直接使用 `get` 通过传图片 Url 拿到人脸识别数据的话是相当简单的，如下请求链接只要使用 `Retrofit` 的 `get` 请求的 `@QueryMap` 传递参数即可: [Get数据Demo](http://apicn.faceplusplus.com/v2/detection/detect?api_key=7cd1e10dc037bbe9e6db2813d6127475&api_secret=gruCjvStG159LCJutENBt6yzeLK_5ggX&url=http://imglife.gmw.cn/attachement/jpg/site2/20111014/002564a5d7d21002188831.jpg)。
 
-`http://apicn.faceplusplus.com/v2/detection/detect?api_key=7cd1e10dc037bbe9e6db2813d6127475&api_secret=gruCjvStG159LCJutENBt6yzeLK_5ggX&url=http://imglife.gmw.cn/attachement/jpg/site2/20111014/002564a5d7d21002188831.jpg`
 
 主要存在的困难点是，当获取本地图片，再使用 `post` 传二进制图片数据时，`post` 要使用 `MultipartTypedOutput`，可参考 [stackoverflow](http://stackoverflow.com/questions/25249042/retrofit-multiple-images-attached-in-one-multipart-request/25260556#25260556) 的回答。然而，这样并没有结束，根据 FacePlusPlus 提供的 SDK Sample 里的 Httpurlconnection 的得到的请求头是这样的：
 
@@ -29,7 +28,7 @@ Content-Length: 32
 Content-Transfer-Encoding: 8bit
  ``` 
  
- 所以需要重写三个类:`CustomMultipartTypedOutput` 增加 boundary 的设置, `AsciiTypeString` 编码格式改为 US-ASCII, `CustomTypedByteArray` 设置其 fileName 为 "NoName"。
+ 所以需要重写三个类:`CustomMultipartTypedOutput` 增加 boundary 的设置, `AsciiTypeString` 编码格式改为 US-ASCII, 当传图片数据时 `CustomTypedByteArray` 设置其 fileName 为 "NoName"。
  
  同时需要注意的是在设置 `RestAdapter` 的 header 时，其 boundary 一定要和 `CustomMultipartTypedOutput` 的 boundary 相同，否则服务端无法匹配的！（这个地方，一时没注意，被整了一个多小时才发现！！） 
  
