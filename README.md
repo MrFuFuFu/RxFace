@@ -21,7 +21,7 @@ RxFace
  
  `[Content-Disposition: form-data; name="img"; filename="NoName", Content-Type: application/octet-stream, Content-Transfer-Encoding: binary]`
  
- 而使用 `Retrofit` 默认实现的话，这样来实现：
+ 而使用 `Retrofit` 默认实现的话，我们这样来实现：
  
  ```java
  public static MultipartTypedOutput mulipartData(Bitmap bitmap, String boundary){
@@ -34,7 +34,7 @@ RxFace
 }
  ```
  
- `RestAdapter` 的请求头参数这样设置：
+ 根据 Sample 的请求头，`RestAdapter` 的请求头参数我们这样设置来：
  
  ```java
  private RequestInterceptor mRequestInterceptor = new RequestInterceptor() {
@@ -47,7 +47,8 @@ RxFace
  ```
  
  
-但是！！！它得到的String参数的头是这样的
+但是！！！它得到的String参数的头是这样的，这里没有贴出其他的差异，
+
  ```java
 Content-Disposition: form-data; name="api_key"
 Content-Type: text/plain; charset=UTF-8
