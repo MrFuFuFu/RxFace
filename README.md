@@ -36,9 +36,9 @@ Content-Transfer-Encoding: 8bit
 
 ## Preview
 
-![image_screen](/images/image_screen.png)
+![image_screen](https://raw.githubusercontent.com/MrFuFuFu/RxFace/master/images/image_screen.png)
 
-![movie_screen](/images/movie_screen.gif)
+![movie_screen](https://raw.githubusercontent.com/MrFuFuFu/RxFace/master/images/movie_screen.gif)
 
 
 ## More about me
