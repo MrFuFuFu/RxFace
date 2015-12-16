@@ -20,7 +20,8 @@ public class DealData {
 
     /**
      * 设置参数
-     * 使用 MultipartTypedOutput, 而不使用 Retrofit @Multipart 的 @Part 和 @PartMap 的形式 http://stackoverflow.com/questions/25249042/retrofit-multiple-images-attached-in-one-multipart-request/25260556#25260556
+     * 使用 MultipartTypedOutput, 而不使用 Retrofit @Multipart 的 @Part 和 @PartMap 的形式
+     * http://stackoverflow.com/questions/25249042/retrofit-multiple-images-attached-in-one-multipart-request/25260556#25260556
      *
      * @see CustomMultipartTypedOutput 重写 MultipartTypedOutput 使之接受 boundary 参数
      * @see AsciiTypeString , 重写 TypedByteArray, 使其编码格式为 US-ASCII
