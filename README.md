@@ -1,6 +1,7 @@
 RxFace
 =====================
 
+用 RxJava, Retrofit, Okhttp 处理人脸识别的简单用例
 
 ## Overview
 
