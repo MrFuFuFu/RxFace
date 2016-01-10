@@ -9,6 +9,17 @@ RxFace
 
 该 demo 的网络请求库使用了 [Retrofit](https://github.com/square/retrofit) 并集成了 [OkHttp](https://github.com/square/okhttp)，使用 [RxJava](https://github.com/ReactiveX/RxJava) 进行封装，方便以流的形式处理网络回调以及图片处理，View 的注入框架用了 [ButterKnife](https://github.com/JakeWharton/butterknife)，图片加载使用 [Glide](https://github.com/bumptech/glide)。
 
+## Versions
+
+### v1.1
+
+1. 增加了 compose 复用 work thread 处理数据，然后在 main thread 处理结果的逻辑
+2. mSubscription.unsubscribe();
+3. 增加了Service 返回错误情况的处理
+
+### v1.0
+
+
 
 ## Difficult point
 
