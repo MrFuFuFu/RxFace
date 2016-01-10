@@ -8,10 +8,10 @@ import android.graphics.Paint;
 
 import java.io.ByteArrayOutputStream;
 
-import mrfu.rxface.loader.AsciiTypeString;
-import mrfu.rxface.loader.CustomMultipartTypedOutput;
-import mrfu.rxface.loader.CustomTypedByteArray;
-import mrfu.rxface.models.FacePlusPlusEntity;
+import mrfu.rxface.loader.custom.AsciiTypeString;
+import mrfu.rxface.loader.custom.CustomMultipartTypedOutput;
+import mrfu.rxface.loader.custom.CustomTypedByteArray;
+import mrfu.rxface.models.FaceResponse;
 
 /**
  * Created by MrFu on 15/12/15.
@@ -62,7 +62,7 @@ public class DealData {
      * @param viewBitmap display bitmap
      * @return face bitmap
      */
-    public static Bitmap drawLineGetBitmap(FacePlusPlusEntity entity, Bitmap viewBitmap){
+    public static Bitmap drawLineGetBitmap(FaceResponse entity, Bitmap viewBitmap){
         //use the red paint
         Paint paint = new Paint();
         paint.setColor(Color.RED);
@@ -104,7 +104,7 @@ public class DealData {
         return null;
     }
 
-    public static String getDisplayInfo(FacePlusPlusEntity entity){
+    public static String getDisplayInfo(FaceResponse entity){
         if (entity == null || entity.face == null || entity.face.size() == 0
                 || entity.face.get(0).attribute == null){
             return "";

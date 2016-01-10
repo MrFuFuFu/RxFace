@@ -4,10 +4,12 @@ import com.squareup.okhttp.OkHttpClient;
 
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import mrfu.rxface.BuildConfig;
 import mrfu.rxface.business.Constants;
-import mrfu.rxface.models.FacePlusPlusEntity;
+import mrfu.rxface.loader.custom.CustomMultipartTypedOutput;
+import mrfu.rxface.models.FaceResponse;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;
@@ -16,6 +18,7 @@ import retrofit.http.GET;
 import retrofit.http.POST;
 import retrofit.http.QueryMap;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * face api
@@ -79,22 +82,36 @@ public class FaceApi {
 
     public interface MrFuService {
         @POST("/detection/detect")
-        Observable<FacePlusPlusEntity> uploadImagePost(
+        Observable<FaceResponse> uploadImagePost(
                 @Body CustomMultipartTypedOutput listMultipartOutput
         );
 
         //http://apicn.faceplusplus.com/v2/detection/detect?api_key=7cd1e10dc037bbe9e6db2813d6127475&api_secret=gruCjvStG159LCJutENBt6yzeLK_5ggX&url=http://imglife.gmw.cn/attachement/jpg/site2/20111014/002564a5d7d21002188831.jpg
         @GET("/detection/detect")
-        Observable<FacePlusPlusEntity> uploadImageUrlGet(
+        Observable<FaceResponse> uploadImageUrlGet(
                 @QueryMap Map<String, String> options
         );
     }
 
-    public Observable<FacePlusPlusEntity> getDataPost(CustomMultipartTypedOutput listMultipartOutput) {
-        return mWebService.uploadImagePost(listMultipartOutput);
+    public Observable<FaceResponse> getDataPost(CustomMultipartTypedOutput listMultipartOutput) {
+        return mWebService.uploadImagePost(listMultipartOutput)
+                .timeout(Constants.TIME_OUT, TimeUnit.MILLISECONDS)
+                .concatMap(new Func1<FaceResponse, Observable<FaceResponse>>() {
+                    @Override
+                    public Observable<FaceResponse> call(FaceResponse faceResponse) {
+                        return faceResponse.filterWebServiceErrors();
+                    }
+                }).compose(SchedulersCompat.<FaceResponse>applyExecutorSchedulers());
     }
 
-    public Observable<FacePlusPlusEntity> getDataUrlGet(Map<String, String> options) {
-        return mWebService.uploadImageUrlGet(options);
+    public Observable<FaceResponse> getDataUrlGet(Map<String, String> options) {
+        return mWebService.uploadImageUrlGet(options)
+                .timeout(Constants.TIME_OUT, TimeUnit.MILLISECONDS)
+                .concatMap(new Func1<FaceResponse, Observable<FaceResponse>>() {
+                    @Override
+                    public Observable<FaceResponse> call(FaceResponse faceResponse) {
+                        return faceResponse.filterWebServiceErrors();
+                    }
+                }).compose(SchedulersCompat.<FaceResponse>applyExecutorSchedulers());//http://www.jianshu.com/p/e9e03194199e
     }
 }

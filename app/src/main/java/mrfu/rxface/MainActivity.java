@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,12 +22,11 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import mrfu.rxface.business.Constants;
 import mrfu.rxface.business.DealData;
 import mrfu.rxface.loader.FaceApi;
-import mrfu.rxface.models.FacePlusPlusEntity;
+import mrfu.rxface.models.FaceResponse;
 import mrfu.rxface.models.NeedDataEntity;
 import rx.Observable;
 import rx.Observer;
@@ -36,7 +34,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Bind(R.id.iv_face_get)
     ImageView iv_face_get;
@@ -67,8 +65,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ButterKnife.bind(this);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -83,25 +79,25 @@ public class MainActivity extends AppCompatActivity {
         options.put("api_key", Constants.API_KEY);
         options.put("api_secret", Constants.API_SECRET);
         options.put("url", Constants.IMAGE_URL);
-        FaceApi.getIns()//api_key={apiKey}&api_secret={apiSecret}&url={imgUrl}
+        mSubscription = FaceApi.getIns()//api_key={apiKey}&api_secret={apiSecret}&url={imgUrl}
                 .getDataUrlGet(options)
-                .cache()
-                .flatMap(new Func1<FacePlusPlusEntity, Observable<NeedDataEntity>>() {
+                .observeOn(Schedulers.newThread())
+                .flatMap(new Func1<FaceResponse, Observable<NeedDataEntity>>() {
                     @Override
-                    public Observable<NeedDataEntity> call(FacePlusPlusEntity facePlusPlusEntity) {
+                    public Observable<NeedDataEntity> call(FaceResponse faceResponse) {
                         Bitmap bitmap = null;
                         try {
-                            bitmap = Glide.with(MainActivity.this).load(Constants.IMAGE_URL).asBitmap().into(-1,-1).get();
+                            //java.lang.IllegalArgumentException: YOu must call this method on a background thread
+                            bitmap = Glide.with(MainActivity.this).load(Constants.IMAGE_URL).asBitmap().into(-1, -1).get();
                         } catch (InterruptedException | ExecutionException e) {
                             e.printStackTrace();
                         }
                         NeedDataEntity entity = new NeedDataEntity();
-                        entity.bitmap = DealData.drawLineGetBitmap(facePlusPlusEntity, bitmap);
-                        entity.displayStr = DealData.getDisplayInfo(facePlusPlusEntity);
+                        entity.bitmap = DealData.drawLineGetBitmap(faceResponse, bitmap);
+                        entity.displayStr = DealData.getDisplayInfo(faceResponse);
                         return Observable.just(entity);
                     }
                 })
-                .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(setBitmapDataObserver);
     }
@@ -112,20 +108,17 @@ public class MainActivity extends AppCompatActivity {
         BitmapDrawable mDrawable =  (BitmapDrawable) iv_face_post.getDrawable();
         final Bitmap bitmap = mDrawable.getBitmap();
 
-        FaceApi.getIns()
+        mSubscription = FaceApi.getIns()
                 .getDataPost(DealData.mulipartData(bitmap, FaceApi.getIns().getBoundary()))
-                .cache()
-                .flatMap(new Func1<FacePlusPlusEntity, Observable<NeedDataEntity>>() {
+                .flatMap(new Func1<FaceResponse, Observable<NeedDataEntity>>() {
                     @Override
-                    public Observable<NeedDataEntity> call(FacePlusPlusEntity facePlusPlusEntity) {
+                    public Observable<NeedDataEntity> call(FaceResponse faceResponse) {
                         NeedDataEntity entity = new NeedDataEntity();
-                        entity.bitmap = DealData.drawLineGetBitmap(facePlusPlusEntity, bitmap);
-                        entity.displayStr = DealData.getDisplayInfo(facePlusPlusEntity);
+                        entity.bitmap = DealData.drawLineGetBitmap(faceResponse, bitmap);
+                        entity.displayStr = DealData.getDisplayInfo(faceResponse);
                         return Observable.just(entity);
                     }
                 })
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(setBitmapDataObserver);
     }
 
@@ -185,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Uri uri = Uri.parse("https://github.com/MrFuFuFu/ImageViewEx");
+            Uri uri = Uri.parse("https://github.com/MrFuFuFu/RxFace");
             Intent i = new Intent(Intent.ACTION_VIEW, uri);
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(i);

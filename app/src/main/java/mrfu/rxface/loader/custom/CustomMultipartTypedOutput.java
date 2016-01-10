@@ -1,4 +1,4 @@
-package mrfu.rxface.loader;
+package mrfu.rxface.loader.custom;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

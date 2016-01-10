@@ -11,4 +11,6 @@ public class Constants {
     public static final String API_SECRET = "gruCjvStG159LCJutENBt6yzeLK_5ggX";
 
     public static final String IMAGE_URL = "http://www.ipmm.cn/UploadImage/20130502/2013050209272791.jpg";
+
+    public static final int TIME_OUT = 30 * 1000;
 }
