@@ -13,7 +13,7 @@ RxFace
 
 ### v1.1
 
-1. 增加了 compose 复用 work thread 处理数据，然后在 main thread 处理结果的逻辑
+1. 增加了 compose 复用 work thread 处理数据，然后在 main thread 处理结果的逻辑:你可以在这片文章看到更多：[RxWeekend——RxJava周末狂欢](http://www.jianshu.com/p/ce228f517586)
 2. mSubscription.unsubscribe();
 3. 增加了Service 返回错误情况的处理
 
