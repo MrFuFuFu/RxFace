@@ -21,7 +21,7 @@ RxFace
 
 
 
-## Difficult point
+## Main difficulties
 
 当直接使用 `get` 通过传图片 Url 拿到人脸识别数据的话是相当简单的，如下请求链接只要使用 `Retrofit` 的 `get` 请求的 `@QueryMap` 传递参数即可: [Get数据Demo](http://apicn.faceplusplus.com/v2/detection/detect?api_key=7cd1e10dc037bbe9e6db2813d6127475&api_secret=gruCjvStG159LCJutENBt6yzeLK_5ggX&url=http://imglife.gmw.cn/attachement/jpg/site2/20111014/002564a5d7d21002188831.jpg)。
 
